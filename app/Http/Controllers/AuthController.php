@@ -15,6 +15,7 @@ class AuthController extends Controller
     {
         // Form validation
         $request->validate(
+            // Rules
             [
                 'text_username' => 'required',
                 'text_password' => 'required'
