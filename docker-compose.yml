@@ -1,10 +1,14 @@
 services:
-  sqlite:
-    image: nouchka/sqlite3:latest
-    container_name: sqlite_db
+  postgres:
+    image: postgres:16
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
+    environment:
+      - POSTGRES_DB=${DB_DATABASE}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
     volumes:
-      - ./data:/database.sqlite
-    tty: true
-    stdin_open: true
+      - postgres-data-development:/var/lib/postgresql/data
+
+volumes:
+  postgres-data-development:
