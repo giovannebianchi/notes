@@ -68,7 +68,8 @@ class AuthController extends Controller
         ]
        ]);
 
-       echo 'Login com sucesso!';
+       // Redirect to home
+       return redirect()->to('/');
     }
 
     public function loginSubmit(Request $request)
