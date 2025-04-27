@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -35,15 +36,16 @@ class AuthController extends Controller
         $username = $request->input('text_username');
         $password = $request->input('text_password');
 
-        // Test database connection
-        try {
-            DB::connection()->getPDO();
-            echo "Connection is OK!";
-        } catch (\PDOException $e) {
-            echo "Connection failed: " . $e->getMessage();
-        }
+        // Get all the users from database
+        // $users = User::all()->toArray();
 
-        echo "Fim!";
+        // As an object instance of the model's class
+        $userModel  = new User();
+        $users = $userModel->all()->toArray();
+
+        echo '<pre>';
+        print_r($users);
+        echo '</pre>';
     }
 
     public function loginSubmit(Request $request)
