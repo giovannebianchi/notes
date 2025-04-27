@@ -78,6 +78,8 @@ class AuthController extends Controller
 
     public function logout()
     {
-        return view('logout');
+        // Logout from the application
+        session()->forget('user');
+        return redirect()->to('/login');
     }
 };
