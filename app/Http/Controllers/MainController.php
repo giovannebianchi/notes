@@ -13,7 +13,11 @@ class MainController extends Controller
     {
       // Load user's notes
       $id = session('user.id');
-      $notes = user::find($id)->notes()->get()->toArray();
+      $notes = user::find($id)
+        ->notes()
+        ->whereNull('deleted_at')
+        ->get()
+        ->toArray();
 
       // Show home view
       return view('home', ['notes' => $notes]);
@@ -114,5 +118,30 @@ class MainController extends Controller
     {
       // $id = $this->decryptId($id);
       $id = Operations::decryptId($id);
+
+      // Load note
+      $note = Note::find($id);
+
+      // Show delete note confirmation
+      return view('delete_note', ['note' => $note]);
+    }
+
+    public function deleteNoteConfirm($id)
+    {
+      // Check if id is encrypted
+      $id = Operations::decryptId($id);
+
+      // Load note
+      $note = Note::find($id);
+
+      // 1. Hard delete
+      // $note->delete();
+
+      // 2. Soft delete
+      $note->deleted_at = date('Y-m-d H:i:s');
+      $note->save();
+
+      // Redirect to home
+      return redirect()->route('home');
     }
 }
